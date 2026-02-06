@@ -1,0 +1,31 @@
+---
+title: "Recitation 1 - Blank"
+output: html_document
+date: "2026-02-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Housekeeping
+1. Set your working directory and read in countries.csv and bat_tongues.csv.
+```{r}
+TYPE HERE
+```
+
+# Histograms
+2. Plot a histogram of the palate length of the bat tongues data frame.
+```{r}
+TYPE HERE
+```
+3. Remove the outliers from the Birth rate crude (per 1000 people column). Then, plot the histogram with the bins changed from the default setting.
+```{r}
+TYPE HERE
+```
+
+# Scatterplots
+4. Plot a scatterplot of any of the two columns in the countries dataframe. Then, interpret what the graph is saying; is there any sort of reasonable correlation? Remember to remove your outliers.
+```{r}
+TYPE HERE
+```

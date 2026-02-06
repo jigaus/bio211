@@ -1,0 +1,203 @@
+---
+title: "BIO 211 - Introduction to R"
+output:
+  pdf_document: default
+  html_document: default
+date: 'Last Updated: 22 January 2026'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+This is the R tutorial that goes along with recitation 1. Regardless of how much experience you have in R, hopefully this should be a good quick start guide for you to keep up with the class.
+
+## Housekeeping
+Just like if you were in a wet lab, you want to make sure you have a good and organized workspace. This is both for your own sanity and mine. For the semester, it would be best if you created a folder on your desktop wherever your heart may desire, and just keep all of your files in there. That way, you can go back and find what you need pretty easily. For example, I'll use a file folder called "bioinfo".
+
+Once you've done that, you can set your working directory. You can do it two ways:
+
+In the first way, you can use the function setwd(), which works slightly differently between Windows and Macs. In general, you'll copy the path to your folder and just paste it into the parentheses. For example, on my Windows computer, I would enter:
+
+setwd("C:/Users/annqu/Documents/bioinfo") or setwd("C:\\Users\\annqu\\Documents\\bioinfo")
+
+Note the direction and number of slashes. But, if I had a Mac, I would enter:
+
+setwd("~/Documents/bioinfo")
+
+Regardless, it's pretty intuitive.
+
+The second way to do it is to go to your Output/Menu box (the bottom right one), press the "Files" tab, find the folder you want to work with, enter, then go to the "More" button up top. Then press "Set as Working Directory" -- easy!
+
+Make sure to set your working directory before you move onto the next few sections.
+
+## Basics to Writing Scripts
+R is pretty rad. You can do a whole bunch of things, like running complex scripts, generate figures, or just use R as a glorified calculator. We'll do a little bit of that last part for now.
+
+To do some simple arithmetic, just type it out in your Source box, then run it. 
+
+```{r}
+3 + 4
+
+# If you want to make a note to yourself, you can type out a hashtag then start writing. These lines are "commented out" and not run with the rest of your script.
+
+# The number of spaces doesn't matter.
+
+3 +        4
+```
+
+We can also evaluate basic mathemetic functions using, well, a function. I mentioned this a little earlier when we were setting our working directory. A **function** is just a block of code that runs when it's called. You can pass data through them -- **an argument** -- to obtain some result. For example, we can calculate the square root of a function using sqrt():
+```{r}
+sqrt ((3^3) / (4-1))
+```
+
+It's just like a calculator; type everything in correctly based on PEMDAS, and you'll get the right answer. If you forget what a function does, you can just put a question mark in front of it and R will tell you what it does, including its usage and what arguments are necessary. For example, let's take a look at round():
+```{r}
+?round
+```
+
+round() tells us that we need two arguments: some number to round and how many digits we'd like to round to, IN THAT ORDER. Thus:
+```{r}
+round(x = 3.982523, digits = 2)
+```
+
+```{r}
+# I also specified the arguments needed, but so long as they're in the right order, you technically don't need to write it out. It might be helpful to though for more complex functions to keep track of things.
+
+round(3.982523, 2)
+```
+
+## Data Types
+There are a bunch of different types of data we can work with. One type is a **vector**, or a list of items that are the same. This is the simplest data structure. We can make vectors using the c() function.
+```{r}
+c(4, 9, 16) # A vector of some numeric values
+sqrt(c(4, 9, 16)) # Passing our vector through the sqrt() command. See how it works?
+```
+
+We can also "assign" variable names. Assigning anything is typically done with a left pointing arrow, though you can use an equal sign too. 
+```{r}
+c("houndoom", "ralts", "marill") # A vector of types of text called strings -- we're not just limited to numbers. Just be careful with your quotes!
+pokemon <- c("flygon", "ninetales", "gallade") # Assigned our above vector to "pokemon"
+
+squares <- c(4, 9, 16)
+sum(squares) # Here's a function for adding things. We've just summed the variables in vector "squares" -- fun!
+```
+
+Try (1) creating a vector and (2) assigning it a name below!
+```{r}
+# TYPE HERE
+```
+<br>
+
+We can also store our data in a **data frame** which is data displayed as a table. We can do so using the data.frame() function. Each column will need to be assigned a vector, which can be strings or variables. You just need to make sure each column has the same number of rows.
+```{r}
+?data.frame
+mydf <- data.frame(firstVariable = c("a", "b", "c"), secondVariable = c(10, 20, 30))
+mydf # Print our data frame
+
+# I've written the above in one line, but you can also put them on separate lines if it makes things clearer.
+
+party <- data.frame(
+  pokemon = c("flygon","ninetales","gallade"),
+  level = c(75, 74, 72),
+  ability = c("levitate", "flash fire", "justified")
+  ) # Don't forget to close out your function!
+party # Print our data frame
+```
+
+You can access specific rows and columns if needed. You can use $ for columns or [,] for rows/columns.
+```{r}
+# The following two lines are doing the same thing: accessing the "level" column of our "party" data frame.
+party$level
+party[, "level"]
+
+```
+
+How do you think we'd determine the value in the second row of our "level" column?
+
+<br>
+
+## Accessing and Assigning Variables
+As I mentioned earlier, you can "assign" variables to make them "mean" different things.
+```{r}
+# Both the arrow and the equal will do the same thing: you're assigning the right-side variable to the left-side. You're more likely to run into people using the arrow, though.  
+a <- 3 
+a = 3 
+
+# You can test this to make sure everything looks good by using two equal signs.
+
+a == 3
+a == 4 # Since we've said a = 3, then it's FALSE for a to equal 4!
+
+```
+
+We can also "index" or search for a variable within a vector using []. 
+```{r}
+myVector <- c(100, 64, 39.5, 11.1341)
+myVector[3]
+myVector[4]
+
+# Perhaps you'll see how this looks pretty similar to how we find rows/columns using [,]
+
+# We can also use these indexed values in other functions
+sqrt(myVector[2])
+```
+
+## Order Matters
+Again, like I mentioned before, R is kind of like a calculator. R is just doing what you tell it to do; thus, order matters for things to be correct.
+```{r}
+# Spot the difference
+x <- 3
+x <- x^2
+x <- x+10
+x
+
+
+x <- 3
+x <- x+10
+x <- x^2
+x
+```
+
+## Using Functions
+Okay! Now, let's run through all of that with an applied example of desert species.
+```{r}
+
+# Making our data frame
+desert_species = data.frame(
+  species = c("javelina", "coati", "rattlesnake", "horned lizard", "gila monster", "black bear"),
+  is.mammal = c(TRUE, TRUE, FALSE, FALSE, FALSE, TRUE),
+  length.meters = c(0.5, 0.4, 1, 0.1, 0.3, 2))
+desert_species
+
+# Let's subset or cut out some of our data by only working with mammals.
+desert_species$is.mammal == TRUE
+desert_species_mammals <- desert_species[desert_species$is.mammal == TRUE, ]
+desert_species_mammals
+
+desert_species_nonmammals <- desert_species[desert_species$is.mammal == FALSE, ]
+desert_species_nonmammals
+
+# We can use different functions on different parts of our data
+mean(desert_species_mammals$length.meters)
+mean(desert_species_nonmammals$length.meters)
+
+# The below block is equivalent to the above block
+mean(desert_species_mammals[, "length.meters"])
+mean(desert_species_nonmammals[, "length.meters"])
+```
+
+## QUESTIONS
+1. Create a data frame storing the first name, last name, and some other numeric column of your choosing (height in inches, or number of siblings, or ?) of each person in your group.
+```{r}
+TYPE HERE
+```
+2. Calculate the mean of that numerical column for your group.
+```{r}
+TYPE HERE
+```
+3. Calculate the total of that numerical column for your group (hint, use the `sum` function)
+```{r}
+TYPE HERE
+```

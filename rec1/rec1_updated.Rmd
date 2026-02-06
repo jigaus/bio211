@@ -1,0 +1,102 @@
+---
+title: "Recitation 1"
+output: html_document
+date: "Last Updated: 22 January 2026"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load in your data
+
+When working in Google Sheets or Microsoft Excel, it's typical you're working with a .xlsx file. In R, it's easier to work with a .csv file, which doesn't require any conversions from you. The file on Brightspace is a .csv file; if you want to look at it on Sheets or Excel, you can load it there too to make life easier. But for now, let's work in R.
+
+First, make sure you've set your working directory - good practice! Next, you're going to read your file (countries.csv) into R. There are two ways to do this. One:
+
+```{r}
+# Since we're reading in a .csv, we'll use the function read.csv() and assign it some name.
+
+countries <- read.csv("path/to/file") # Copy the path to your file into the function. To find the path, go to the file in your File Explorer > right ckick > copy path. Just like if you were setting your work directory.
+```
+
+The second is to go into your Environment and press "Import Dataset." Press "From text (base)" and find your file. **When the prompt box appears, make sure the "Headings" button is set to yes.**
+
+```{r}
+# To make sure everything looks good, we can check some things about the data frame. 
+
+head(countries) # We can take a look at the first few rows of a data frame using head(). You can also specify the number of rows you want to see by adding a number: head(countries, 3)
+
+colnames(countries) # We can look at the column names using colnames()
+
+```
+
+# Countries Activity - Q2
+
+Let's take a look at the data from the 10th column (Birth rate crude (per 1000 people)). You'll see some NA values - those are missing data. 
+
+```{r}
+countries[, 10]
+
+```
+
+Let's plot a histogram of the data to try and understand what we're working with. We can do so using the base r hist() command.
+```{r}
+hist(countries[, 10])
+
+```
+
+Wow... that looks so good... Let's adjust the bins - hopefully they'll look a little nicer.
+
+```{r}
+hist(countries[,10], breaks = 20)
+hist(countries[,10], breaks = 10)
+hist(countries[,10], breaks = 5)
+```
+
+Why does it still look wonky? Take a look at the values in that column and see if you can spot what looks wrong.
+
+If you wanted to remove a value from your table, you could do so by manually going into Excel/Sheets, deleting it, then reload your file into R... or we could just delete it in R. To remove a particular cell from a table, we can use the indexing: countries[row, column]. So to delete the value for the 5th row, and 4th column (for example), we would do:
+```{r}
+countries[5, 4]
+countries[5, 4] <- NA
+countries[5, 4] # we've now replaced the value to an NA value
+```
+
+Now do the same to the value that is causing problems for the birth rate histogram, and plot the histogram again. To save a plot, you can right click on the plot then press "Save as...". (Also, it must be said that normally you work in R in your Source, so your plot will appear in the "Plots" box in the bottom right. Here, it'll appear in the Markdown file). 
+```{r}
+TYPE HERE
+```
+
+
+# Bat Activity - Q3
+A slight detour. Let's look at the data from the bat_tongues.csv file. Read it in and double check the columns by using head() or columns(). In my case, I've read the file in as bat_tongues. You can adjust the names in the box below. From there, we'll plot a scatterplot. 
+
+```{r}
+x <- bat_tongues[, 2] # we'll use palate length as the independent variable
+y <- bat_tongues[, 3] # we'll use tongue length as our dependent variable
+
+plot(x, y) # You can assign the values to plot them, or you can just put them in directly below.
+plot(bat_tongues[, 2], bat_tongues[, 3])
+```
+
+
+# Back to the Countries Dataset - Q4
+Plot the relationship between:
+- personal computers and life expectancy
+- number of physicians and life expectancy
+
+The actual column names are:
+- "Personal_computers_per_100_people_"
+- "Life_expectancy_at_birth_total_years_"
+- "Physicians_per_1000_people_"
+The names are funky because I had to adjust some things. Oops!
+
+When you do so, make sure to remove any outliers so that your plots don't look too weird!
+
+```{r}
+TYPE HERE
+
+```
+
+

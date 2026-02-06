@@ -1,0 +1,63 @@
+---
+title: "Intro to R - practice"
+output: html_document
+date: "2026-02-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Set your working directory
+
+Practice setting your working directory below.
+
+```{r}
+setwd("C:/Users/annqu/Documents/bioinfo/bio211/rec1")
+```
+
+# Vectors and Data Tables
+
+1.  Make a vector containing the words "king julien", "maurice", and "mort" and assign them to the name "lemurs"
+2.  Make a vector containing any four numbers. Then, determine their sum.
+
+```{r}
+# 1
+lemurs <- c("king julien", "maurice", "mort")
+lemurs
+
+# 2
+numbers <- c(56, 48, 29, 94947)
+sum(numbers)
+```
+
+3.  Make a data frame using the data.frame() function. The first column should be labeled "names" with the names "an", "ashley", "lyra", "lauren", "salim", "jorge", and "chenjie". The second should be labeled "age" going, in order: 23, 23, 22, 29, 30, 30, 25.
+4.  Determine the mean of the age column.
+
+```{r}
+# 3
+cool_people <- data.frame(
+  names = c("an", "ashley", "lyra", "lauren", "salim", "jorge", "chenjie"),
+  ages = c(23, 23, 22, 29, 30, 30, 25)
+)
+cool_people
+
+# 4 
+mean(cool_people$ages)
+```
+
+5.  Add in another column which identifies the individuals whose names start with the letter L. You can just rewrite your data frame command, then add in another column.
+6.  Subset either the individual whose names DO start with L or DON'T start with L.
+
+```{r}
+# 5
+cool_people <- data.frame(
+  names = c("an", "ashley", "lyra", "lauren", "salim", "jorge", "chenjie"),
+  ages = c(23, 23, 22, 29, 30, 30, 25),
+  take_the_L = c(F, F, T, T, F, F, F)
+)
+
+# 6
+lameos <- cool_people[cool_people$take_the_L == T, ]
+lameos
+```
