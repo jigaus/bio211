@@ -1,0 +1,170 @@
+---
+title: "Recitation 4 - Visualizing and Analyzing Sampling Error"
+output: html_document
+date: "2026-01-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Housekeeping
+Set your working directory and read in the shellweights.csv file.
+
+```{r cars}
+TYPE HERE
+```
+
+# Understanding sampling error
+As biologists, we want to understand or answer some kind of scientific question, typically about some population. However, the population we're working with may be huge – practically infinite in size – making it impossible to know the "true" value of the question we're asking. For example, how feasible would it be for me to ask every single American their opinion on chocolate ice cream? Not very easy!
+
+Thus, in statistics, we'll take subsets of the population to be a representative sample of the population. However, when choosing our samples, some biases may occur (of which we've talked about in lecture). One way to mitigate such biases is to perform random sampling. We'll figure out how to do so in this recitation activity.
+
+1.  We read in a one column table, but it'll be easier to work with a vector. So, let's change that. I've read the file in as "weights" but you can change it to match how you uploaded your file.
+
+```{r}
+weights <- weights[,1]
+```
+
+2.  Calculate the mean of all of the weights, using either the mean() function or the sum() and length() functions. This will represent your population mean. Make sure to assign the value a name (like populatonMean).
+
+```{r}
+```
+
+3.  Now, we're gonna take a sample population of size 2 (n=2) from our weight data frame. To do so, we'll use the sample() function, which will take a sample of some specified size from our object. It can do so with or without replacement. After we take the sample, we'll calculate that sample's mean which, as you might expect, will represent our sample mean.
+
+```{r}
+randomSample <- sample(weights, 2)
+mean(randomSample)
+```
+
+## The for loop
+4.  Now, let's try and calculate mean weights for samples of various sizes. Determine the mean weight of a sample size n = 5.
+
+```{r}
+TYPE HERE
+```
+
+This is an okay method for when you're working with a handful of values. But, scientists tend to work with hundreds of datapoints, and manually determining the means of samples is tedious and annoying. Instead, the nice thing about R is that we can make a **for loop** to automate this process for us!
+
+A for loop is a loop which starts with the command "for" and they more or less look like this:
+
+```{r, eval = FALSE}
+for(i in object){
+  do this
+}
+```
+
+For loops are used to iterate or run through some vector and do some command. "i" is the current value being iterated over; whatever letter you put in here is arbitrary, though I'm used to using i, as I think of it like it's our indexed value. Using a for loop useful for when our dataset is extremely large and we want to do many commands over it. Here's one example:
+
+```{r}
+# Let's use the party data frame from Recitation 1. I'm also going to pull out our Pokemon as a list to show that we can use for loops to iterate over objects by themselves or columns of dataframes -- anything as long as it's a vector!
+
+party <- data.frame(
+  pokemon = c("flygon","ninetales","gallade"),
+  level = c(75, 74, 72),
+  ability = c("levitate", "flash fire", "justified")
+  )
+
+pokemon <- list("flygon","ninetales","gallade")
+
+for(i in pokemon){
+  print("you have good taste in pokemon!")
+}
+
+for(i in party$pokemon){
+  print("you have good taste in pokemon!")
+}
+```
+
+Both of the loops are doing the same thing. For every value, i, in our object, either "pokemon" or the pokemon column of our data frame, our loop will print out a nice statement out my choice in favorite Pokemon. Now, let's look at an example using numbers where I want to take the square of every value in my dataset:
+
+```{r}
+x <- 1:10 # Generating a set of numbers from 1-10
+y <- numeric(10) # Generating an empty set of 0s.
+
+for(i in x){
+  y[i] <- x[i]*x[i]
+}
+
+print(x)
+print(y)
+```
+
+It might look a little bit fancier than our previous example, but it's not so difficult to understand once we break it down. First, we've generated our set of values: numbers from 1 to 10. Next, we generated an empty set (y) so that we can keep track of what's happening. Then, in our for loop, what we've done is that for every value, i, in our object, x, we want to take the square of the currently indexed value. When that's done, we'll store it in the correct slot in our empty y set. Last, we'll print our x and y sets to see what we've done.
+
+Practice writing your own for loop using either the level or ability column in the party data frame. For example, maybe you'll want to multiply the each of the level values by three.
+
+```{r}
+TYPE HERE
+```
+
+Okay, so we've taken a quick detour to discuss for loops, but now let's get back to our original question. Let's try and make a for loop to determine the mean of a bunch of different values.
+
+```{r}
+# Let's determine the mean weights for samples of sizes 2, 5, 10, 20, 25, 30, and 35.
+
+sample_size = c(2, 5, 10, 20, 25, 30, 35) # Determining our sample sizes
+sample_means <- numeric(7) # Creating a space to store our results
+
+# For every i in our sample, we'll take the mean of the samples from our weight list, with sample size determined by our sample_size  vector
+for(i in seq_along(sample_size)){
+  sample_means[i] <- mean(sample(weights, size = sample_size[i]))
+}
+```
+
+After we've determined our sample means, let's put this all in a table. We'll use the cbind function, which *binds* objects in R by either columns (**c**bind) or rows (**r**bind).
+
+```{r}
+# We're still using cbind(), but we're using the as.data.frame() function to make our final result a data frame
+sampleMeans <- as.data.frame(cbind(sample_size, sample_means))
+```
+
+# Absolute Percent Error
+
+5.  Now, let's calculate our percent error. This is probably a concept you're already familiar with, most likely in a chemistry lab. It works to quantify the precision of our results. It generally takes the form:
+
+(\| experimental - theoretical \| / theoretical) \* 100
+
+In our case, our "experimental" value would be our sample means while our "theoretical" value is our population mean. To calculate our percent error, we'll use the abs() function, which takes the absolute value of the object in the function. We'll use the party dataframe as an example:
+
+```{r}
+mean_level <- mean(party$level)
+PE_party <- (abs(party$level-mean_level) / mean_level)*100
+
+PE_party # What is returned is the percent error of each of my pokemon 
+```
+
+Calculate the percent error of your sample means now compared to your population mean. When you're done, add the set of values to the sampleMeans dataframe by using the cbind() function.
+
+```{r}
+TYPE HERE
+```
+
+# Saving your data! - Q1
+Saving tables takes a little bit more effort compared to saving a plot (but not that much effort). All you need to do is use the function write.csv(), which writes out a .csv file for you. This will save your table to your working directory.
+
+```{r}
+# There are a couple of extra arguments you may end up playing around with, depending on how you want to save the file. If you want to see what they're doing, run ?write.csv
+
+write.csv(sampleMeans, "title.csv", quote = F, row.names= F) # Change your file title!
+```
+
+# Q2
+Question 2 of your document asks you to plot a histogram. Use the space to do so. Make sure to include proper labels.
+
+```{r}
+```
+
+# Q3
+Question 3 asks you to make a line graph. We'll use the plot() function, just like if we were to plot a scatterplot; however, we'll add in a type argument to specify we want it to be a line plot. Save your plot then add it to the recitation assignment document.
+
+```{r}
+# Don't forget to include your title/axes labels, and your commas!!!!!!
+
+plot(
+  x = # write what you think your x-values should be
+  y = # write what you think your y-values should be
+  type = "b" #line plot
+)
+```

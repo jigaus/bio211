@@ -1,0 +1,96 @@
+---
+title: "Recitation 2 - What kind of data do I have?"
+output: html_document
+date: "Last Updated: 2026-01-25"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Don't forget to set your working directory before you get started!
+
+# Installing a package
+Last time, we used a .csv file to work with our data and, again, this is just better practice. However, let's say that you desperately want to work with an Excel file, which R cannot do on its own. This means we have to install and load a package.
+
+A **package** in R contain codes, functions, and documentation for you to do whatever task you'd like. For example, *dplyr* is one of the most widely used packages available and it allows you to manipulate data fairly easily. To install a package which lets us read in Excel files, we'll do:
+
+```{r}
+install.packages("readxl", repos = "http://cran.us.r-project.org")
+```
+
+After you've installed a package once, you won't need to do it again. You'll just need to open it by running the library() function:
+```{r}
+library(readxl)
+```
+
+Awesome.
+
+# Activity - Q15
+Alright, so this question is asking you to make a plot to compare the data in any one of the available datasets. This example will use the stature_hand_foot.xlsx file, so if you want just follow along, then go crazy.
+
+First, load in your dataset of choice. To do so with the package we just downloaded:
+```{r}
+dat <- as.data.frame(read_excel("stature_hand_foot.xlsx")) # We're using a function similar to read.csv(). Instead of just reading in a file directly, we'll read in an Excel file (read_excel()) as a data frama using as.data.frame().
+
+colnames(dat)
+```
+
+Let's make a histogram using the third column in the dataset - height - so that we can look at one column of data individually.
+```{r}
+dat[, "Height"] # This is the third column, so instead of typing out Height every time, I'm just going to use the column number
+
+hist(dat[, 3]) # Make your histogram
+
+# Remember that you can fiddle with the bin sizes
+hist(dat[, 3], breaks = 20)
+hist(dat[, 3], breaks = 10)
+hist(dat[, 3], breaks = 5)
+```
+
+We may want to attempt to describe the distribution we're seeing, through descriptive statistics you should be familiar with, such as the mean, median, or mode. In R, we don't have to do this manually, as it has built in functions to handle that.
+
+```{r}
+h <- dat[, "Height"]
+
+mean(h) # the mean
+median(h) # the mode
+var(h) # the variance
+sd(h) # the standard deviation
+
+# To get a table of useful key statistics, you can use the summary() function
+summary(h)
+```
+
+**QUESTION:** If you had to take a guess, how would you determine the minimum and maxmium of our dataset, without using the summary() function?
+```{r}
+```
+
+To compare two variables, we'll need to make a scatterplot. Maybe this time, I'll want to compare hand and foot length. 
+
+```{r}
+# Also, it's generally good practice to keep your column headers the same typing (all lowercase, for example) and avoid using spaces because it's just annoying down the line. So I probably would've intially labeled them as "hand_length" but... whatever.
+
+
+x <- dat[, "hand length"] # or dat[, 4]
+y <- dat[, "foot length"] # or dat[, 5]
+
+plot(x, y)
+
+# OR
+plot(dat[, 'hand length'], dat[, 'foot length'])
+```
+
+You can also customize your figures to make them more readable/nicer! Base r is good on its own, but you can explore the documentation for packages like ggplot2 to see some real fancy stuff.
+
+```{r}
+plot(x, y, 
+     xlab = 'hand length (mm)', # xlab = x-axis labels
+     ylab = 'foot length (mm)', #  ylab = y-axis labels
+     main = 'hand length vs foot length') # main = your title
+
+```
+
+**QUESTION**: Practice by writing the code to generate a scatter plot comparing height and hand length. Include proper labeling.
+```{r}
+# TYPE HERE
+```
