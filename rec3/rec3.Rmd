@@ -1,7 +1,7 @@
 ---
 title: "Recitation 3 - Evolution in Action"
 output: html_document
-date: "2026-01-26"
+date: "Last Updated: 2026-02-06"
 ---
 
 ```{r setup, include=FALSE}
@@ -10,8 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Housekeeping
 
-**1.** Set your working directory 
-**2.** Read in data frames for wing length, body mass, tarsus length, and beak depth. They should all be in different tabs of the finches_dataset.xlsx dataset. You can read them in as either .csv files or .xlsx files with the readxl() package.
+**1.** Set your working directory
+
+**2.** Read in data frames for wing length, body mass, tarsus length, and beak depth. You can read them in as either .csv files or .xlsx files with the readxl() package.
 
 ```{r}
 TYPE HERE
@@ -19,7 +20,7 @@ TYPE HERE
 
 # Practice, Standard Error, and Confidence Intervals
 
-**3.** In recitation 2, we went over some summary statistic functions R can calculate. Determine the standard devitation using the function for standard deviation for either column ("Survivor" or "Nonsurvivor") of any of the four datasets. You can only do one here, but you'll need to calculate them again later, so it might be helpful to write them out.
+**3.** In recitation 2, we went over some summary statistic functions R can calculate. Using the standard deviation function, determine the standard deviation for either column ("Survivor" or "Nonsurvivor") of any of the four datasets. You can only do one here, but you'll need to calculate them again later, so it might be helpful to write them out.
 
 ```{r}
 TYPE HERE
@@ -32,17 +33,17 @@ length(beakDepth[, "Nonsurvivor"]) # Gives us the number of items in the vector
 
 n <- length(beakDepth[, "Nonsurvivor"]) # We can now set n to be the length of the vector
 
-# Remember that R can basically function as a calculator. Imagine you're typing your equation into Desmos:
+# Remember that R can basically function as a calculator. Imagine you're typing your equation into something like Desmos:
 SE <- sd(beakDepth[, "Nonsurvivor"]) / sqrt(n)
 ```
 
-Now, calculate the standard error of your data frame of choice. You can overwrite the code in the box above. Again, you only need to do one for now, but you'll need to calculate them all later.
+Now, calculate the standard error of your data frame of choice. You can use the codeblock above. Again, you only need to do one for now, but you'll need to calculate them all later.
 
 **5.** After determining the SE, we can now calculate our confidence intervals, which is the range of reasonable values we would expect our population mean to fall within. They generally take the form of:
 
 point estimate (some average estimated from your sample data) +/- margin of error (a range of values calculated from your sample data, in which the point estimate is contained).
 
-Margins of error are calculated by multiplying some z-score (a multiplier determined by assumming a normal distribution) and your standard error. To calculate a 95% confidence interval, we'll say our z-score = 2. Thus:
+Margins of error are calculated by multiplying some z-score (a multiplier determined by assuming a normal distribution) and your standard error. To calculate a 95% confidence interval, we'll say our z-score = 2. Thus:
 
 ```{r}
 # Lower bound
@@ -52,13 +53,13 @@ mean(beakDepth[, "Nonsurvivor"]) - (2 * SE)
 mean(beakDepth[, "Nonsurvivor"]) + (2 * SE)
 ```
 
-Again, overwrite the code above with your data frame of choice to calculate the 95% confidence intervals.
+Again, use the codeblock above calculate the 95% confidence intervals for the dataset of your choice.
 
 A side note: base R doesn't have a function which handles confidence intervals, but you can look up "confidence interval function R" online to find functions within packages that can do the job. Or you can make your own function, which we'll probably discuss at some point this semester.
 
 # Assignment - Q1
 
-The question: Using R, construct four bar graphs that compare the means of non-survivors and survivors for each physical characteristic (wing length, body mass, tarsus length, and beak depth). I'll walk through an example using beak depth. Afterwards, feel free to overwrite the code in the box or you can just open up a separate R script file and work in there. **Just remember to save the figure when you're done!**
+The question: Using R, construct four bar graphs that compare the means of non-survivors and survivors for each physical characteristic (wing length, body mass, tarsus length, and beak depth). I'll walk through an example using beak depth.
 
 ```{r}
 # First, we'll calculate our summary statistics 
@@ -79,9 +80,24 @@ nonSurvivor2SE <- 2 * nonSurvivorSE
 
 bars <- barplot(height = c(meanSurvivors, meanNonSurvivors), # The bars you're plotting
               names.arg = c('survivors', 'non-survivors'), # The labels for the bars
-              ylim = c(0, 12), # Since we need to add CIs, this extends the limit of our y-axis 
+              ylim = c(0, 12), # Since we need to add CIs, this extends the limit of our y-axis
               main = "beak depth for survivors and non-survivors", # Title
-              ylab = "beak depth (mm)") # y-axis label
+              ylab = "beak depth (mm)",) # y-axis label
+
+
+```
+
+As you might've noticed, the bars automatically generated by barplot() are... quite big. You can play around with the bar size with a combination of the *width*, *xlim*, and *space* arguments.
+
+```{r}
+bars <- barplot(height = c(meanSurvivors, meanNonSurvivors), 
+              names.arg = c('survivors', 'non-survivors'), 
+              ylim = c(0, 12), 
+              main = "beak depth for survivors and non-survivors", 
+              ylab = "beak depth (mm)",
+              width = c(0.1,0.1),
+              xlim = c(0,1),
+              space = 3)
 ```
 
 Since we've assigned the bar plot to "bars", barplot() returns the midpoint of the x-axis for our two bars in the environment, which will be helpful in calculating our error bars. To do so, we'll use the arrows() function, which adds arrows between pairs of points. Your draw your arrow **from** (x0, y0) **to** (x1, y1).
@@ -89,13 +105,13 @@ Since we've assigned the bar plot to "bars", barplot() returns the midpoint of t
 Let's think about which points we should use. If the error bars represent 95% CI's, then they are centered on our point estimates (the mean), and start at the lower bound and end at the upper bound of the confidence interval. So in other words, the starting y-coordinates would be the lower bound and our ending y-coordinates would be the upper bound. Since these are vertical bars, the starting and ending x-coordinates will be identical, and we would want to place them in the middle of the bars, which barplot() returned for us.
 
 ```{r, echo=FALSE}
-# Generally, if you're writing this in a normal R script, you won't need to type the barplot function twice. However, with the way .Rmd files work and for the sake of the tutorial, I'm doing it again. 
+# Generally, if you're writing this in a normal R script, you won't need to type the barplot function twice. However, with the way .Rmd files work, you just need to write it out again so that your barplot() and arrows() functions are in the same codeblock. 
 
-bars <- barplot(height = c(meanSurvivors, meanNonSurvivors), # The bars you're plotting
-              names.arg = c('survivors', 'non-survivors'), # The labels for the bars
-              ylim = c(0, 12), # Since we need to add CIs, this extends the limit of our y-axis 
-              main = "mean beak depth for survivors and non-survivors", # Title
-              ylab = "beak depth (mm)") # y-axis label
+bars <- barplot(height = c(meanSurvivors, meanNonSurvivors), 
+              names.arg = c('survivors', 'non-survivors'), 
+              ylim = c(0, 12), 
+              main = "mean beak depth for survivors and non-survivors", 
+              ylab = "beak depth (mm)") 
 
 # y0 will be the lower bound
 lowerCIbounds <- c(meanSurvivors - survivor2SE, meanNonSurvivors - nonSurvivor2SE)
@@ -112,4 +128,8 @@ arrows(x0 = bars,
        code = 3) # What kind of arrow is being drawn
 ```
 
-As you make figures for each of the datasets, don't forget to adjust (1) the limit of your y-label and (2) your title and y-axis labels!
+And that's it! Feel free to complete the document questions now. You can use the space below to make your plots. As you make figures for each of the datasets, don't forget to adjust (1) the limit of your y-label and (2) your title and y-axis labels!
+
+```{r}
+TYPE HERE
+```
