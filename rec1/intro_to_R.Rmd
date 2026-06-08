@@ -1,0 +1,210 @@
+---
+title: "Introduction to R"
+output:
+  pdf_document: default
+  html_document: default
+date: 'Last Updated: 07 June 2026'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Hello! Presumably, if you've been able to open this file, you (1) are a student in BIO211 and (2) successfully downloaded R and can now start working on your recitation assignments.
+
+## Arithmetic
+
+R is pretty rad. You can do a whole bunch of things, like running complex models, generate figures, or just using R as a glorified calculator.
+
+For example, let's say I wanted to calculate `3+4`. We can do so by just typing it in. On a Windows, you can press `ctrl` + `enter`. On a Mac, it'll be `cmd` + `enter`.
+
+```{r}
+# we can make "comments" by writing out a pound or hashtag in front of your text
+# keep an eye out for when I make comments to you!
+3 + 4
+```
+
+Note that the spacing and indentation don't matter.
+
+```{r}
+# these are the same
+3 +         4
+    3 + 4
+```
+
+We can also evaluate more complex functions using a `function`. A `function` is just a block of code that runs when it's called. You can pass data through them -- an `argument` -- to obtain some result. For example, we can calculate the square root of a function using `sqrt()`.
+
+```{r}
+sqrt ((3^3) / (4-1))
+```
+
+It's just like a calculator; type everything in correctly based on PEMDAS, and you'll get the right answer.
+
+If you forget what a function does or want to see what it does, we can put a question mark in front of it to view the documentation, which includes its usage and which arguments are necessary.
+
+For example, let's take a look at `round()`:
+
+```{r, eval = FALSE}
+?round
+```
+
+`round()` tells us that we need two arguments: some number to round and how many digits we'd like to round to, *in that order*. Thus:
+
+```{r}
+round(x = 3.982523, digits = 2)
+```
+
+In the above case, I've specified the argument, but so long as you put things in the correct order (as listed in the documentation), you can just put your data in directly.
+
+```{r}
+round(3.982523, 2)
+```
+
+## Data Types
+
+In the previous section, we were largely working with **integers**. We can also work with text values which are called **strings**.
+
+We can also combine a bunch of items of the same type into a **vector**, a list of items which are of the same type of data. They are designated by `c()` – as in "concatenate" or "collate" or "collect" or any way you'd like to remember it.
+
+```{r}
+# a vector of integers
+c(4, 9, 16) 
+
+# a vector of strings. note the quotes which "store" this text and retain their status as text.
+c("flygon", "ninetales", "gallade")
+```
+
+If you just enter these both, they'll just print and look cool. However, what may be useful is storing this data for later use, which we can do by "assigning" these variables some names.
+
+Assigning names can be done either using a left pointing arrow `<-` or an equal sign `=` , though some may shame you for using the latter. The arrow points us in the direction by which we should read our line of code.
+
+```{r}
+# assigning the number 5 to an arbitrary name
+woohoo <- 5
+
+# we can see what this looks like by writing the name of the assignment out again 
+woohoo
+
+# assigning the vector to the name "pokemon"
+pokemon <- c("flygon", "ninetales", "gallade") 
+```
+
+Once we assign vectors name, we can also pass these vectors through a function. For example, let's say we wanted to find the mean (`mean()`) and standard deviation (`sd()`) of a set of numbers. Rather than typing the numbers repeatedly, we can store the values and run the vector through the appropriate functions.
+
+```{r}
+# instead of doing...
+mean(c(3, 4, 5))
+sd(c(3, 4, 5))
+
+# we can do...
+x <- c(3, 4, 5)
+mean(x)
+sd(x)
+
+# we could even assign these output values a name!
+mean_x <- mean(x)
+```
+
+Note that functions will only take specific types of data. If we were to try and pass our `pokemon` vector through mean, we would get an error.
+
+**A side note on assigning names:** There are names which are and aren't allowed when assigning values. Spaces in names and numbers/characters going first are not allowed. Generally, I recommend using one word or underscores/periods when assigning names. And make the names clear and obvious!
+
+```{r, eval = FALSE}
+# valid
+means <- mean(c(5, 6, 7))
+standard_deviation <- sd(c(5, 6, 7))
+bomb.com <- c("bee's", "knees")
+
+# not valid
+_means <- mean(c(5, 6, 7))
+4head <- c("forehead")
+```
+
+## Storing Data
+
+We can also store data in tables. Perhaps the most common way we may store data is in a **data frame**.
+
+You'll see data frames pop up in a bunch of different contexts throughout this course and there are many, many ways of making one. Here's just one way of making a data frame using the `data.frame()` function, which builds the data frame by column.
+
+```{r}
+df <- data.frame(
+    first_variable = c("a", "b", "c"),
+    second_variable = c(10, 20, 30)
+)
+
+# print your data frame to see what it looks like
+df
+```
+
+```{r}
+# another example
+party <- data.frame(
+  pokemon = c("flygon","ninetales","gallade"),
+  level = c(75, 74, 72),
+  ability = c("levitate", "flash fire", "justified")
+)
+```
+
+We can also access specific rows and columns. What's commonly used are brackets, which represent the rows and columns, `[rows, columns]`. We put the data frame outside of the brackets then indicate what we want to pull.
+
+```{r}
+# pulling the second row of the data frame
+party[2, ]
+
+# pulling the second column of the data frame. both of these do the same thing!
+party[, 2]
+level <- party[, "level"]
+
+# pulling the data from the second row, second column
+party[2, 2]
+```
+
+When specifically pulling columns, you can also use `$`, which I find to be much easier to remember. You can call it by putting the data frame name, dollar sign, then the column name. Additionally, once you type the dollar sign, you can `tab` and scroll through your possible options.
+
+```{r}
+party$level
+```
+
+We can also do something similar with vectors, where we may want to pull out a specific value from a list of values. Doing this also uses brackets.
+
+```{r}
+# in this case, we're getting the value in the second position of the pokemon vector
+pokemon[2]
+```
+
+## Try It Yourself!
+
+| Name   | Age | Favorite Fruit |
+|--------|-----|----------------|
+| An     | 23  | Mango          |
+| Angelo | 24  | Apple          |
+| Aiden  | 21  | Pineapple      |
+
+1.  Try and replicate the data frame of the table above using the `data.frame()` function as I've shown you before.
+
+    ```{r}
+
+    ```
+
+2.  Pull the `age` column and assign the column a name.
+
+    ```{r}
+
+    ```
+
+3.  Calculate the mean and standard deviation of the `age` column.
+
+    ```{r}
+
+    ```
+
+## Knitting the file
+
+When you finish working in a Markdown file, what you'll want to do (besides saving it) is **knitting** the file. It basically translates all the code into a readable document. For the purposes of recitation, I'll want you to submit the files as a PDF, which may require you to install a version of LaTex. Run the box below and it should do the work for you.
+
+```{r, eval = FALSE}
+install.packages('tinytex', repos = "http://cran.us.r-project.org")
+tinytex::install_tinytex()
+```

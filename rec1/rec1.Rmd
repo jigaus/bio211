@@ -1,0 +1,183 @@
+---
+title: "Recitation 1"
+output: 
+    html_document: default
+    pdf_document: default
+date: "Last Updated: 07 June 2026"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+For this Recitation assignment, we'll be learning:
+
+-   How to work with data in R
+
+-   How to plot histograms and scatter plots in R
+
+-   What considerations to make when making data readable and understandable
+
+## Working with data...
+
+While during our Introduction to R we were generating our own data, often times, you'll be importing and working with data from outside of R. For this class, I won't have you load in your own data; instead, I'll provide you with data to load in. However, to do this, we'll have to install some packages first.
+
+(If you want to learn how to import data yourself, you can scroll to the end of this activity).
+
+## ...But first, packages
+
+While R has many built-in functions (which may be referred to as "base R"), but there may be more complex tasks you want to complete which can't be done natively. We can then instead install a **package**, which contains codes, functions, and documentation for you to do whatever task you'd like. People write packages for anything, so you'll see some here or maybe you'll come across them in your own career!
+
+For recitation, we'll be using the package `Rdatasets`, which contains a huge collection of publicly-available data. To do so, we'll use the function `install.packages()`. Typically, you won't need the `repos` argument but working in Markdown makes doing some things a little funky.
+
+```{r, eval = FALSE}
+install.packages("Rdatasets", repos = "http://cran.us.r-project.org")
+```
+
+Once you've installed a package, you no longer need to install it again even after closing out of this file. To make sure your package is loaded, we'll use the `library()` function. Note that `install.packages()` has the package name in quotes but `library()` does not.
+
+```{r}
+library(Rdatasets)
+```
+
+To load in the dataset, we'll use the function `rddata()`. In this case, we'll use the `starwars` dataset which has some demographic data on various Star Wars characters (please feel free to shove me into a locker when you see me). Note that I'm assigning it the name `starwars` for questions down the line!
+
+```{r}
+starwars <- rddata("starwars")
+starwars <- subset(starwars, select = -c(rownames)) # i'm removing the first column for you
+```
+
+## Working with data: *Star Wars* example
+
+For our first example, we'll working with a `starwars` dataset which has some demographic data on various *Star Wars* characters (yes – you can shove me into a locker for being a loser). To load in the dataset, we'll use the function `rddata()`.
+
+```{r}
+starwars <- rddata("starwars")
+starwars <- subset(starwars, select = -c(rownames)) # i'm removing the first column for you
+```
+
+First, let's take a look at the `mass` column and see what we're working with.
+
+```{r}
+starwars$mass
+```
+
+Looking at plain data like this isn't very helpful; thus, to get a sense of what we're looking at, we can plot our data. There are many ways to plot data in R; perhaps the most common way is to use the package `ggplot2`. However, in recitation, we'll only work with functions in base R.
+
+We can generate a histogram of our data using the `hist()` function, which I think of being under an informal category of plot functions at large in base R.
+
+Most of these plot functions require similar arguments. Perhaps, most importantly, are your title and axes labels, which are vital. If nothing else, you should always have axes labels!! Note the arguments I've used. `main` refers to the title and `xlab` refers to the x-axis label. Think about what the y-axis label would be!
+
+```{r}
+mass <- starwars$mass
+mass # print it out to see what's been generated 
+
+hist(
+    mass,
+    main = "Histogram of Star Wars Characters' Mass",
+    xlab = "Mass"
+)
+```
+
+```{r}
+# above is my preferred way of graphing only one column. however, we could also do it like this:
+
+hist(
+    starwars$mass,
+    main = "Histogram of Star Wars Characters' Mass",
+    xlab = "Mass"
+)
+```
+
+This graph looks a little strange; we have a ton of values frequenting lower values while only a few in higher values. It seems that the most logical solution would be to remove such outliers. Rather than manually editing the data, we can index the particular outlying value and then remove it by making it a "Not Available" or `NA` value; R basically understands this to be blank or missing data.
+
+```{r}
+# note that the following two lines of code are doing the same thing. what's the difference between the two?
+mass[16] <- NA
+starwars[16, 3] <- NA
+```
+
+As you can see, assigning values isn't limited to storing data, but editing our data as well. Let's plot our `mass` data again to see if anything's changed.
+
+```{r}
+hist(mass)
+```
+
+Nice! Now, it becomes much easier to understand and draw inferences about our data.
+
+Another plot we could use to look at data is a scatter plot. For example, perhaps we wanted to analyze some relationship between two variables, such as our characters' heights and weights. Unlike `hist()`, the function `plot()` requires you to identify your x- and y-values.
+
+```{r}
+# what conclusion could you draw from the plot below?
+
+plot(
+    x = starwars$height,
+    y = starwars$mass,
+    main = "Heights v. Mass",
+    xlab = "Height",
+    ylab = "Mass"
+)
+```
+
+The nice thing about R is that, generally speaking, most plots are made to look readable; it just becomes a matter of the data you're working with. We can also make our plots look nicer using other arguments provided by `plot()`. Again, remember that you can use the `?` function to see which arguments are available.
+
+```{r}
+# see the difference? 
+
+plot(
+    x = starwars$height,
+    y = starwars$mass,
+    main = "Heights v. Mass",
+    xlab = "Height",
+    ylab = "Mass",
+    col = "#165916",
+    pch = 16,
+    cex = 2
+)
+```
+
+### Practice
+
+1.  In the box below, generate a histogram with appropriate labels for the `birth_year` column of our data. If you observe any outliers, be sure to remove them.
+
+    ```{r}
+
+    ```
+
+2.  In the box below, generate a scatter plot comparing `birth_year` to another column of your choice with appropriate labels.
+
+    ```{r}
+
+    ```
+
+## Working with data: Bats
+
+Now, let's consider some actual biological data. First, read the paper published by Muchhala et al. (2006). Then, load the data below:
+
+```{r}
+bats <- read.csv("https://raw.githubusercontent.com/jigaus/bio211/refs/heads/main/rec1/bat_tongues.csv", header = T)
+```
+
+1.  Plot two histograms. One should be for the `Palate_length_mm` column and the other should be for the `Tongue_length_mm` column.
+
+    ```{r}
+
+    ```
+
+2.  Observe the outlier in one of the histograms. Remove the outlier as shown above.
+
+    ```{r}
+
+    ```
+
+3.  Plot the relationship between `Palate_length_mm` and `Tongue_length_mm` with appropriate labels.
+
+    ```{r}
+
+    ```
+
+4.  Write one sentence describing the relationship observed in the plot.
+
+5.  Briefly, explain the evolutionary reason as to why the outlier was observed as noted by Muchhala et al. (2006).
