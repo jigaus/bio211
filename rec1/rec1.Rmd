@@ -160,6 +160,8 @@ Now, let's consider some actual biological data. First, read the paper published
 bats <- read.csv("https://raw.githubusercontent.com/jigaus/bio211_new/refs/heads/main/rec1/bat_tongues.csv", header = T)
 ```
 
+Note that we've loaded in a `.csv` file, which stands for comma-separated values. This is a more widely accessible form of data as opposed to an Excel file (`.xslx`) and it's standard practice to upload your data in this format!
+
 1.  Plot two histograms. One should be for the `Palate_length_mm` column and the other should be for the `Tongue_length_mm` column.
 
     ```{r}
