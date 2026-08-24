@@ -157,7 +157,7 @@ plot(
 Now, let's consider some actual biological data. First, read the paper published by Muchhala et al. (2006). Then, load the data below:
 
 ```{r}
-bats <- read.csv("https://raw.githubusercontent.com/jigaus/bio211/refs/heads/main/rec1/bat_tongues.csv", header = T)
+bats <- read.csv("https://raw.githubusercontent.com/jigaus/bio211_new/refs/heads/main/rec1/bat_tongues.csv", header = T)
 ```
 
 1.  Plot two histograms. One should be for the `Palate_length_mm` column and the other should be for the `Tongue_length_mm` column.

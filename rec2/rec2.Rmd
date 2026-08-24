@@ -1,0 +1,129 @@
+---
+title: "Recitation 2"
+output: 
+    pdf_document: default
+date: "Last Updated: 24 August 2026"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+In any given data set, we may have more than one type of variable and not all of the same type. Recognizing this then places limits on the kinds of analyses we can perform. For this assignment, you'll be looking through various datasets and answering questions about the types of data present.
+
+```{r}
+# load in the Rdatasets package 
+library(Rdatasets)
+```
+
+### Types of data
+
+## A. Rats
+
+```{r}
+rats <- rddata("genotype")
+rats <- subset(rats, select = -c(rownames))
+```
+
+This dataset is sourced from a feeding experiment with rats. The columns list the litter number, the genotype (the specific genetic material of an individual) of the mother, and the average weight of her litter. To view our dataset, we can do a number of things:
+
+-   Print the name of the data frame
+
+    ```{r}
+    rats
+    ```
+
+-   Go to your "Environment" and press on the name of your data frame
+
+-   Use the function `head()` to look at the first few rows (including the column names) of our data frame
+
+    ```{r}
+    head(rats)
+    ```
+
+Additionally, to view the information contained within these columns, we can use the function `rddocs()` with the argument being our dataset's name.
+
+```{r, eval = FALSE}
+rddocs("genotype")
+```
+
+#### Questions
+
+1.  Which is the explanatory variable and which is/are the response variable(s)?
+2.  There are three columns of data in this table. What types of variables are they?
+
+## B. COVID testing data
+
+```{r}
+# a good example of data (>15k entrees) which may not be easily handled by programs like Excel
+covid <- rddata("covid_testing")
+covid <- subset(covid, select = -c(rownames))
+```
+
+1.  Use the `rddocs()` function to view the documentation of the `covid_testing` data set.
+2.  Identify a column that contains continuous variables.
+3.  Identify a column that contains categorical variables.
+
+## C. Cats
+
+```{r}
+cats <- rddata("cats")
+cats <- subset(cats, select = -c(rownames))
+```
+
+Another way we can analyze our data is by using summary statistics to describe our data. Such values include the mean. variance, and standard deviation. R handles these functions with ease and with intuitively named functions, such as `var()` and `sd()`, for example. We can also use the function `summary()`. All of these take a vector of numerical values.
+
+1.  Use the `rddocs()` function to view the documentation of the `"cats"` data set.
+
+    ```{r, eval = FALSE}
+
+    ```
+
+2.  Which is the explanatory variable and which is/are the response variable(s)?
+
+3.  Determine the means of your response variable(s) using the appropriate function in R.
+
+    ```{r}
+
+    ```
+
+4.  Use the `summary()` function to determine the range of the `Bwt` column.
+
+    ```{r}
+
+    ```
+
+## D. Pima women and diabetes
+
+```{r}
+pima <- rddata("Pima.tr")
+pima <- subset(pima, select = -c(rownames))
+```
+
+1.  Use the `rddocs()` function to view the documentation of the `"Pima.tr"` data set.
+
+    ```{r, eval = FALSE}
+
+    ```
+
+2.  Plot a histogram of the `glu` column with the appropriate labels.
+
+    ```{r}
+
+    ```
+
+3.  Write one sentence describing what you observe in your histogram. For example, you could describe the variance or the mean of your distribution or what your distribution looks like to you.
+
+    ```{r}
+    # use this box if you need to 
+    ```
+
+4.  Plot a scatterplot between `glu` and `bp` (consider which would be the explanatory and response variable) with the appropriate labels.
+
+    ```{r}
+
+    ```
+
+5.  Write one sentence describing the relationship you observe between `glu` and `bp`.
